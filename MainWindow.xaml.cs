@@ -23,14 +23,14 @@ namespace AtletikaV2
         private bool vr;
         private bool er;
 
-        public int Rajtszam { get; set; }
-        public string Nev { get; set; }
-        public string Versenyszam { get; set; }
-        public string Nem { get; set; }
-        public int Eletkor { get; set; }
-        public bool OR { get; set; }
-        public bool VR { get; set; }
-        public bool ER { get; set; }
+        public int Rajtszam { get => rajtszam; set => rajtszam = value; }
+        public string Nev { get => nev; set => nev = value; }
+        public string Versenyszam { get => versenyszam; set => versenyszam = value; }
+        public string Nem { get => nem; set => nem = value; }
+        public int Eletkor { get => eletkor; set => eletkor = value; }
+        public bool OR { get => or; set => or = value; }
+        public bool VR { get => vr; set => vr = value; }
+        public bool ER { get => er; set => er = value; }
 
         public Versenyzo(int rajtszam, string nev, string versenyszam, string nem, int eletkor, bool or, bool vr, bool er)
         {
@@ -60,6 +60,17 @@ namespace AtletikaV2
             view = CollectionViewSource.GetDefaultView(Versenyzok);
             view.Filter = SzuroFeltetel;
 
+            FrissitSzamlalot();
+        }
+
+        private void FrissitSzamlalot()
+        {
+            if (txtLetszam != null && view != null)
+            {
+                int látható = view.Cast<object>().Count();
+                int összes = Versenyzok.Count;
+                txtLetszam.Text = $"Látható: {látható} / Összesen: {összes}";
+            }
         }
 
         private bool SzuroFeltetel(object item)
@@ -73,14 +84,10 @@ namespace AtletikaV2
 
                 switch (cmbRekordSzuro.SelectedIndex)
                 {
-                    case 1:
-                        return v.OR;
-                    case 2:
-                        return v.VR;
-                    case 3:
-                        return v.ER;
-                    default:
-                        return true;
+                    case 1: return v.OR;
+                    case 2: return v.VR;
+                    case 3: return v.ER;
+                    default: return true;
                 }
             }
             return false;
@@ -91,6 +98,15 @@ namespace AtletikaV2
             if (view != null)
             {
                 view.Refresh();
+                FrissitSzamlalot();
+            }
+        }
+
+        private void Eletkor_Valtozott(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (txtEletkor != null)
+            {
+                txtEletkor.Text = $"{e.NewValue} év";
             }
         }
 
@@ -176,6 +192,7 @@ namespace AtletikaV2
             Versenyzok.Add(ujVersenyzo);
 
             view.Refresh();
+            FrissitSzamlalot();
 
             MessageBox.Show($"A regisztráció sikeres. Kiosztott rajtszám: {rajtszam}", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -274,6 +291,7 @@ namespace AtletikaV2
                     {
                         Versenyzok.Clear();
                         view.Refresh();
+                        FrissitSzamlalot();
                         return;
                     }
 
@@ -318,6 +336,7 @@ namespace AtletikaV2
                     }
 
                     view.Refresh();
+                    FrissitSzamlalot();
                 }
                 catch (Exception ex)
                 {

@@ -143,7 +143,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="txtLetszam" Grid.Column="0" Text="Látható: 0 / Összesen: 0" VerticalAlignment="Center" FontWeight="SemiBold" />
+                <TextBlock x:Name="txtLetszam" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold"/>
                 <Button x:Name="btnMentes" Grid.Column="1" Content="FÁJLBA MENTÉS" Margin="0,0,16,0" Width="210" Height="32" Click="Mentes_Click" VerticalAlignment="Center" />
                 <Button x:Name="btnBetoltes" Grid.Column="2" Content="FÁJLBÓL BETÖLTÉS" Width="210" Height="32" Click="Betoltes_Click" VerticalAlignment="Center" />
             </Grid>
